@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS books (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    review TEXT,
+    rating INTEGER CHECK(rating >= 1 AND rating <= 5),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
