@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">新增書籍紀錄</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('book_bp.create_book') }}" method="POST">
+                    <div class="mb-4">
+                        <label for="title" class="form-label fw-bold">書名 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ title|default('') }}" required placeholder="輸入書名">
+                    </div>
+                    <div class="mb-4">
+                        <label for="rating" class="form-label fw-bold">給這本書的評分 (可選)</label>
+                        <select class="form-select" id="rating" name="rating">
+                            <option value="">選擇評分...</option>
+                            {% for i in range(1, 6) %}
+                                <option value="{{ i }}" {% if rating|string == i|string %}selected{% endif %}>{{ i }} 星</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="review" class="form-label fw-bold">閱讀心得筆記</label>
+                        <textarea class="form-control" id="review" name="review" rows="6" placeholder="寫下你的想法或重點摘要...">{{ review|default('') }}</textarea>
+                    </div>
+                    <div class="d-flex justify-content-between mt-5">
+                        <a href="{{ url_for('book_bp.index') }}" class="btn btn-outline-secondary">取消</a>
+                        <button type="submit" class="btn btn-primary px-4">儲存紀錄</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

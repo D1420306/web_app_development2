@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">編輯書籍紀錄</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('book_bp.update_book', id=book.id) }}" method="POST">
+                    <div class="mb-4">
+                        <label for="title" class="form-label fw-bold">書名 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ book.title }}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="rating" class="form-label fw-bold">重新評分 (可選)</label>
+                        <select class="form-select" id="rating" name="rating">
+                            <option value="">選擇評分...</option>
+                            {% for i in range(1, 6) %}
+                                <option value="{{ i }}" {% if book.rating|string == i|string %}selected{% endif %}>{{ i }} 星</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="review" class="form-label fw-bold">閱讀心得筆記</label>
+                        <textarea class="form-control" id="review" name="review" rows="6">{{ book.review or '' }}</textarea>
+                    </div>
+                    <div class="d-flex justify-content-between mt-5">
+                        <a href="{{ url_for('book_bp.detail', id=book.id) }}" class="btn btn-outline-secondary">取消</a>
+                        <button type="submit" class="btn btn-warning px-4">確認更新</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

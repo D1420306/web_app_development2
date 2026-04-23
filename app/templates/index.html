@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="mb-0">我的書單</h2>
+    </div>
+    <div class="col-md-6 text-end">
+        <form action="{{ url_for('book_bp.index') }}" method="GET" class="d-flex justify-content-md-end mt-3 mt-md-0">
+            <input class="form-control me-2" type="search" name="q" placeholder="搜尋書名..." value="{{ search_query }}" style="max-width: 250px;">
+            <button class="btn btn-outline-primary" type="submit">搜尋</button>
+        </form>
+    </div>
+</div>
+
+{% if books %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for book in books %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ book.title }}</h5>
+                <p class="card-text text-muted mb-2">
+                    {% if book.rating %}
+                        <span class="text-warning fs-5">
+                            {% for _ in range(book.rating) %}★{% endfor %}{% for _ in range(5 - book.rating) %}☆{% endfor %}
+                        </span>
+                    {% else %}
+                        尚未評分
+                    {% endif %}
+                </p>
+                <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ book.review or '尚無心得' }}
+                </p>
+            </div>
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-end">
+                <a href="{{ url_for('book_bp.detail', id=book.id) }}" class="btn btn-sm btn-outline-info">查看詳情</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-secondary text-center py-5" role="alert">
+    <h4 class="alert-heading mb-3">空空如也！</h4>
+    <p>目前尚無符合的書籍紀錄。</p>
+    <a href="{{ url_for('book_bp.new_book') }}" class="btn btn-primary mt-2">點我新增第一本書</a>
+</div>
+{% endif %}
+{% endblock %}
